@@ -7,6 +7,10 @@
     --light-text: #fff;
     --background: #f5f5f5;
     --card-bg: #ffffff;
+    --wave-color-1: rgba(41, 98, 255, 0.9);    /* Brighter blue */
+    --wave-color-2: rgba(0, 119, 255, 0.7);    /* Medium blue */
+    --wave-color-3: rgba(0, 191, 255, 0.5);    /* Light blue */
+    --wave-color-4: rgba(224, 242, 255, 0.3);  /* Very light blue */
 }
 
 * {
@@ -17,9 +21,10 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #4285f4;
+    background: var(--wave-color-1);
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
 }
 
 .container {
@@ -69,6 +74,14 @@ body {
     background: rgba(255, 255, 255, 0.2) !important;
     padding: 0.5rem 1.5rem;
     border-radius: 20px !important;
+    transition: all 0.3s ease;
+    animation: pulseButton 2s infinite;
+}
+
+@keyframes pulseButton {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 /* Navigation */
@@ -95,10 +108,27 @@ body {
     text-decoration: none;
     margin-left: 2rem;
     transition: color 0.3s ease;
+    position: relative;
 }
 
 .nav-links a:hover {
     color: var(--accent-color);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    background: var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+    left: 0;
 }
 
 /* Hero Section */
@@ -111,9 +141,8 @@ body {
     position: relative;
     padding: 2rem;
     overflow: hidden;
-    background: url('landscape.png') no-repeat center center;
     background-size: cover;
-    z-index: -1000;
+    z-index: 1;
 }
 
 .hero::before {
@@ -147,7 +176,6 @@ body {
     );
     z-index: 1;
 }
-
 
 .hero-content {
     position: relative;
@@ -294,6 +322,25 @@ body {
     height: 600px;
     margin: 3rem auto;
     margin-top: 50px;
+    animation: floatAndRotate 6s ease-in-out infinite;
+}
+
+@keyframes floatAndRotate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-15px) rotate(2deg);
+    }
+    50% {
+        transform: translateY(0) rotate(0deg);
+    }
+    75% {
+        transform: translateY(15px) rotate(-2deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
 }
 
 .mascot-image {
@@ -338,6 +385,16 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     position: relative;
     transform: rotate(-5deg);
+    animation: glowButton 3s infinite;
+}
+
+@keyframes glowButton {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(46, 204, 113, 0.5);
+    }
 }
 
 .action-button::after {
@@ -484,10 +541,47 @@ body {
 
 /* Footer */
 footer {
-    background: var(--text-color);
+    background: rgba(0, 0, 0, 0.9);
     color: var(--light-text);
     text-align: center;
     padding: 2rem 0;
+    position: relative;
+    z-index: 1;
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer .container {
+    position: relative;
+    z-index: 2;
+}
+
+footer p {
+    font-size: 1rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+footer p:hover {
+    opacity: 1;
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 1.5rem 0;
+        margin-top: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 1rem 0;
+        margin-top: 2rem;
+    }
+    
+    footer p {
+        font-size: 0.9rem;
+    }
 }
 
 /* Animations */
@@ -597,7 +691,7 @@ footer {
 
 /* Alert Section */
 .alert-section {
-    background: #000;
+    background: rgba(0, 0, 0, 0.7);
     padding: 2rem 0;
     overflow: hidden;
     position: relative;
@@ -627,6 +721,7 @@ footer {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform: skew(-5deg);
     flex-shrink: 0;
+    animation: tiltAlert 3s ease-in-out infinite;
 }
 
 .alert-box::after {
@@ -650,6 +745,7 @@ footer {
     transform: skew(5deg);
     text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
     white-space: nowrap;
+    animation: fadeInUp 1.5s ease-out;
 }
 
 @keyframes scrollLeft {
@@ -693,7 +789,7 @@ footer {
 
 /* Welcome Section */
 .welcome-section {
-    background: #4285f4;
+    background: transparent;
     position: relative;
     overflow: hidden;
     padding: 2rem;
@@ -756,6 +852,13 @@ footer {
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
     position: relative;
     display: inline-block;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
 }
 
 .welcome-title::after {
@@ -773,6 +876,7 @@ footer {
     line-height: 1.6;
     margin-bottom: 1rem;
     line-height: 2rem;
+    animation: fadeInUp 1.5s ease-out;
 }
 
 .card-box {
@@ -879,7 +983,7 @@ footer {
 }
 
 .tokenomics-section {
-    background: #4285f4;
+    background: transparent;
     padding: 4rem 2rem;
     position: relative;
     overflow: hidden;
@@ -910,6 +1014,31 @@ footer {
     border-radius: 15px;
     background: #1a73e8;
     line-height: 4rem;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+    animation: slideInFromTop 1s ease-out, glowText 3s infinite;
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes glowText {
+    0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
+    50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+    100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.1); }
 }
 
 .tokenomics-grid {
@@ -927,6 +1056,12 @@ footer {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border: 4px solid #000;
     transform: skew(-5deg);
+    transition: all 0.3s ease;
+}
+
+.tokenomics-card:hover {
+    transform: translateY(-10px) rotate(-2deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 .tokenomics-card:nth-child(1) {
@@ -949,6 +1084,12 @@ footer {
     line-height: 1;
     text-transform: uppercase;
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+    animation: scaleNumber 2s infinite;
+}
+
+@keyframes scaleNumber {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 .token-label {
@@ -1018,7 +1159,7 @@ footer {
 }
 
 .wallpapers-section {
-    background: #4285f4;
+    background: transparent;
     padding: 4rem 2rem;
     position: relative;
     overflow: hidden;
@@ -1041,6 +1182,13 @@ footer {
     border-radius: 15px;
     background: #1a73e8;
     line-height: 4rem;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
 }
 
 .wallpapers-grid {
@@ -1058,11 +1206,16 @@ footer {
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border: 4px solid #000;
-    transition: transform 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .wallpaper-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.wallpaper-card:hover .wallpaper-image {
+    transform: scale(1.1) rotate(2deg);
 }
 
 .wallpaper-preview {
@@ -1078,10 +1231,6 @@ footer {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
-}
-
-.wallpaper-card:hover .wallpaper-image {
-    transform: scale(1.1);
 }
 
 .wallpaper-info {
@@ -1109,6 +1258,12 @@ footer {
     font-weight: bold;
     transition: all 0.3s ease;
     border: 2px solid #000;
+    animation: bounceButton 2s infinite;
+}
+
+@keyframes bounceButton {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
 }
 
 .download-btn:hover {
@@ -1170,7 +1325,7 @@ footer {
 }
 
 .community-section {
-    background: #4285f4;
+    background: transparent;
     padding: 4rem 2rem;
     position: relative;
     overflow: hidden;
@@ -1193,6 +1348,13 @@ footer {
     border-radius: 15px;
     background: #1a73e8;
     line-height: 4rem;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
 }
 
 .community-content {
@@ -1213,7 +1375,7 @@ footer {
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border: 4px solid #000;
-    transition: all 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform: skew(-5deg);
     position: relative;
     overflow: hidden;
@@ -1238,7 +1400,7 @@ footer {
 }
 
 .community-card:hover {
-    transform: skew(-5deg) translateY(-10px);
+    transform: skew(-5deg) translateY(-10px) rotate(2deg);
 }
 
 .community-card:hover::before {
@@ -1266,6 +1428,13 @@ footer {
     border: 4px solid #000;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     transform: skew(5deg);
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
 }
 
 .twitter .social-icon {
@@ -1435,5 +1604,164 @@ footer {
     .social-btn {
         padding: 0.8rem 1.5rem;
         font-size: 1.1rem;
+    }
+}
+
+/* Wave Background */
+.wave-container {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, #1a73e8 0%, #4285f4 100%);
+}
+
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    bottom: -50%;
+    background: var(--wave-color-1);
+    border-radius: 1000% 1000% 0 0;
+    animation: wave 15s linear infinite;
+    opacity: 0.9;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.wave:nth-child(2) {
+    bottom: -55%;
+    background: var(--wave-color-2);
+    animation: wave 17s linear infinite;
+    animation-delay: -5s;
+    opacity: 0.7;
+}
+
+.wave:nth-child(3) {
+    bottom: -60%;
+    background: var(--wave-color-3);
+    animation: wave 20s linear infinite;
+    animation-delay: -2s;
+    opacity: 0.5;
+}
+
+.wave:nth-child(4) {
+    bottom: -65%;
+    background: var(--wave-color-4);
+    animation: waveReverse 18s linear infinite;
+    animation-delay: -7s;
+    opacity: 0.3;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1);
+        filter: brightness(100%);
+    }
+    25% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.8);
+        filter: brightness(110%);
+    }
+    50% {
+        transform: translateX(-50%) translateZ(0) scaleY(1.2);
+        filter: brightness(120%);
+    }
+    75% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.8);
+        filter: brightness(110%);
+    }
+    100% {
+        transform: translateX(0) translateZ(0) scaleY(1);
+        filter: brightness(100%);
+    }
+}
+
+@keyframes waveReverse {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1);
+        filter: brightness(100%);
+    }
+    25% {
+        transform: translateX(25%) translateZ(0) scaleY(0.8);
+        filter: brightness(110%);
+    }
+    50% {
+        transform: translateX(50%) translateZ(0) scaleY(1.2);
+        filter: brightness(120%);
+    }
+    75% {
+        transform: translateX(25%) translateZ(0) scaleY(0.8);
+        filter: brightness(110%);
+    }
+    100% {
+        transform: translateX(0) translateZ(0) scaleY(1);
+        filter: brightness(100%);
+    }
+}
+
+/* Add wave highlight effect */
+.wave::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: waveHighlight 5s linear infinite;
+}
+
+@keyframes waveHighlight {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Adjust all sections to work with the wave background */
+.welcome-section,
+.tokenomics-section,
+.wallpapers-section,
+.community-section {
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+.alert-section {
+    background: rgba(0, 0, 0, 0.7);
+    position: relative;
+    z-index: 1;
+}
+
+/* Add shimmer effect to section headers */
+.welcome-title,
+.tokenomics-header h2,
+.wallpapers-header h2,
+.community-header h2 {
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
     }
 } 
